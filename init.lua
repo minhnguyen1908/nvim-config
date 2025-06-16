@@ -167,74 +167,16 @@ require("lazy").setup({
 
     -- PLUGIN 1: nvim-treesitter for intelligent syntax highlighting and indentation.
     -- This uses a parsing engine for more accurate and robust highlighting than traditional regex.
-    { 'nvim-treesitter/nvim-treesitter',
-        build = ':TSUpdate', -- Command to run after installation to download language parsers.
-        config = function()
-            require('nvim-treesitter.configs').setup {
-                ensure_installed = { 'dockerfile', 'lua', 'bash', 'json', 'yaml', 'python', 'sql', 'plsql' }, -- Ensure Dockerfile and other common DevOps parsers are installed.
-                highlight = { enable = true },       -- Enable syntax highlighting.
-                indent = { enable = true },          -- Enable smart indentation.
-            }
-            vim.treesitter.language.register("sql", "dadbod-sql-query")
-            vim.treesitter.language.register("sql", "dbui-query") -- Older convention
-            vim.treesitter.language.register( "plsql", "plsql")
-        end
-    },
+    -- ~/.config/nvim/lua/plugins/treesitter.lua
 
-  -- PLUGIN 2: akinsho/toggleterm.nvim for integrated terminal management.
-  -- Allows you to easily toggle a floating or split terminal inside Neovim.
-  { 'akinsho/toggleterm.nvim', version = "*",
-        config = function ()
-            require("toggleterm").setup({
-                size = 20, -- Default size for split (lines for horizontal, columns for vertical).
-                           -- You can adjust this if you switch to a split direction.
-                hide_numbers = true, -- Hide line numbers in the terminal
-                shade_filetypes = {},
-                shade_terminals = true,
-                shading_factor = 2, -- default: 1 for dark, 0 for light, This adjust dimming.
-                start_in_insert = true,
-                insert_mappings = true, -- Important if you want to use vim mappings in terminal
-                persist_size = true,
-                direction = 'float',
-                float_opts = {
-                    border = 'curved', -- 'single' | 'double' | 'rounded' | 'curved' | 'solid'
-                    winblend = 3, -- transparency
-                    height = 30, -- Set the height for the floating window (e.g., 30 lines)
-                    width = 120, -- Set the width for the floating window (e.g., 120 columns)
-                    row = nil, -- Center vertically
-                    col = nil, -- Center hirizontally
-                },
-                -- You can still use you existing <leader>tt mapping for convenience
-                -- but you set the options in the setup function.
-            })
+    -- PLUGIN 2: akinsho/toggleterm.nvim for integrated terminal management.
+    -- Allows you to easily toggle a floating or split terminal inside Neovim.
+    -- ~/.config/nvim/lua/plugins/toggleterm.lua
 
-  end 
-  }, -- `config = true` means it uses its default setup.
-
-  -- PLUGIN 3 & 4: Mason and Mason-LSPConfig for managing and setting up Language Servers.
-  -- Language Servers provide IDE-like features (autocompletion, hover docs, diagnostics, go-to-definition).
-  -- Mason manages the installation of the actual language server executables (e.g., `dockerfile-language-server`).
-  { 'williamboman/mason.nvim', config = true }, -- Basic setup for Mason.
-
-  { 'williamboman/mason-lspconfig.nvim',
-    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig' },
-    config = function()
-      require('mason-lspconfig').setup {
-                automatic_setup = true,
-        -- `ensure_installed` will make Mason download these LSP servers automatically on first run.
-        ensure_installed = {
-          'dockerls', -- For Dockerfiles
-          'docker_compose_language_service',
-          'lua_ls',             -- For Neovim config (Lua)
-          'bashls',             -- For shell scripts
-          'jsonls',             -- For JSON files
-          'yamlls',             -- For YAML files (Kubernetes, Docker Compose, Ansible)
-          'pyright',            -- For Python
-          -- Add more as you need, e.g., 'tsserver' for TypeScript, 'gopls' for Go, 'terraformls' for Terraform.
-        },
-      }
-    end
-  },
+    -- PLUGIN 3 & 4: Mason and Mason-LSPConfig for managing and setting up Language Servers.
+    -- Language Servers provide IDE-like features (autocompletion, hover docs, diagnostics, go-to-definition).
+    -- Mason manages the installation of the actual language server executables (e.g., `dockerfile-language-server`).
+    -- ~/.config/nvim/lua/plugins/mason.lua
 
   -- PLUGIN 5: nvim-lspconfig for configuring the native Neovim LSP client.
   -- This plugin helps Neovim communicate with the language servers Mason installs.
