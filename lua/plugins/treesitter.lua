@@ -11,5 +11,6 @@ return {
         }
         vim.treesitter.language.register("sql", "dadbod-sql-query")
         vim.treesitter.language.register("sql", "dbui-query") -- Older convention
+        vim.treesitter.language.register("sql", "plsql")
     end,
 }

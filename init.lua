@@ -178,207 +178,32 @@ require("lazy").setup({
     -- Mason manages the installation of the actual language server executables (e.g., `dockerfile-language-server`).
     -- ~/.config/nvim/lua/plugins/mason.lua
 
-  -- PLUGIN 5: nvim-lspconfig for configuring the native Neovim LSP client.
-  -- This plugin helps Neovim communicate with the language servers Mason installs.
-    { 'neovim/nvim-lspconfig',
-        dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
-        config = function()
-            local lspconfig = require('lspconfig')
-            -- `capabilities` informs the LSP server about Neovim's features (e.g., snippet support).
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-            -- Helper function to set up LSP servers easily.
-            local on_attach = function(client, bufnr)
-                -- Enable completion triggered by <C-x><C-o> in insert mode
-                vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-                -- Mappings.
-                -- See `:help vim.lsp.*` for the functions.
-                -- Use `gd` for Go to Definition, `K` for Hover Documentation.
-                vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr, desc = 'Go to Definition' })
-                vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Info' })
-                vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = bufnr, desc = 'Go to Implementation' })
-                vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = bufnr, desc = 'Show References' })
-                vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = bufnr, desc = 'Rename Symbol' })
-                vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Code Action' })
-
-                -- Diagnostic navigation (errors/warnings)
-                vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = bufnr, desc = 'Previous Diagnostic' })
-                vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = bufnr, desc = 'Next Diagnostic' })
-
-                -- *** ADD NEW MAPPINGS FOR FILTERED DIAGNOSTIC ***
-                local diagnostic_severity = vim.diagnostic.severity
-
-                -- Jum to previous ERROR.
-                vim.keymap.set('n', '[e', function ()
-                    vim.diagnostic.goto_prev({ severity = diagnostic_severity.ERROR })
-                end, { buffer = bufnr, desc = 'Previous ERROR Diagnostic'})
-
-                -- Jump to next ERROR.
-                vim.keymap.set('n', ']e', function ()
-                    vim.diagnostic.goto_next({ severity = diagnostic_severity.ERROR }) 
-                end, { buffer = bufnr, desc = 'Next ERROR Diagnostic'})
-
-                -- Jump to previous WARNING.
-                vim.keymap.set('n', '[w', function ()
-                    vim.diagnostic.goto_prev({ severity = diagnostic_severity.WARN }) 
-                end, { buffer = bufnr, desc = 'Previous WARNING Diagnostic' })
-
-                -- Jump to next WARNING.
-                vim.keymap.set('n', ']w', function ()
-                    vim.diagnostic.goto_next({ severity = diagnostic_severity.WARN }) 
-                end, { buffer = bufnr, desc = 'Next WARNING Diagnostic'})
-
-                -- Open list with only ERROR.
-                vim.keymap.set('n','<leader>qe', function ()
-                    vim.diagnostic.setloclist({ severity = diagnostic_severity.ERROR }) 
-                end, { buffer = bufnr, desc = 'Quickfix List with ERRORs' })
-
-                -- Open list with WARNING.
-                vim.keymap.set('n', '<leader>qw', function ()
-                    vim.diagnostic.setloclist({ severity = diagnostic_severity.WARN }) 
-                end, { buffer = bufnr, desc = 'Quickfix List with WARNINGS '})
-
-                -- *** END OF NEW MAPPINGS ***
-            end
-
-            -- Setup individual LSP servers. Mason will ensure these are installed.
-            -- Each `setup` call configures the LSP client for a specific language.
-            lspconfig.dockerls.setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-                filetypes = { 'dockerfile' },
-            }
-            lspconfig.lua_ls.setup {
-                capabilities = capabilities,
-                on_attach = on_attach,
-                settings = {
-                    Lua = {
-                        workspace = { checkThirdParty = false },
-                        telemetry = { enable = false },
-                    },
-                },
-            }
-            lspconfig.bashls.setup { capabilities = capabilities, on_attach = on_attach }
-            lspconfig.jsonls.setup { capabilities = capabilities, on_attach = on_attach }
-            lspconfig.yamlls.setup { capabilities = capabilities, on_attach = on_attach }
-            lspconfig.pyright.setup { capabilities = capabilities, on_attach = on_attach }
-
-            -- You can add more LSP setups here as you install more servers via Mason.
-            -- Example: lspconfig.tsserver.setup { capabilities = capabilities, on_attach = on_attach }
-        end
-    },
+    -- PLUGIN 5: nvim-lspconfig for configuring the native Neovim LSP client.
+    -- This plugin helps Neovim communicate with the language servers Mason installs.
+    -- ~/.config/nvim/lua/plugins/nvim-lspconfig.lua
 
     -- PLUGIN 6: nvim-cmp for intelligent autocompletion.
     -- This takes suggestions from LSP, buffers, paths, and presents them in a nice pop-up.
     -- ~/.config/nvim/lua/plugins/cmp.lua
 
-  -- PLUGIN 7: Optional Colorscheme.
-  -- This changes the visual theme of Neovim. Choose one that you find aesthetically pleasing!
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'catppuccin-macchiato' -- You can try 'catppuccin-mocha', 'catppuccin-latte', 'catppuccin-frappe'
-    end
-  },
+    -- PLUGIN 7: Optional Colorscheme.
+    -- This changes the visual theme of Neovim. Choose one that you find aesthetically pleasing!
+    -- ~/.config/nvim/lua/plugins/colorscheme.lua
 
-  -- PLUGIN 8: nvim-tree.lua - A modern file explorer.
-  -- Very useful for navigating project directories.
-  { 'nvim-tree/nvim-tree.lua',
-        version = '*', -- Use '*' to get the latest stable version unless specific version is needed
-        dependencies = { 'nvim-tree/nvim-web-devicons' }, -- For file icons (requires a Nerd Font)
-        config = function()
-          require('nvim-tree').setup {
-            -- `filters` configuration has changed. `exclude_dir` is now part of `custom`.
-            filters = {
-                dotfiles = false,
-                -- Use `custom` for both file and directory exclusions.
-                custom = { 'npm-debug.log', 'yarn-error.log', '.git', 'node_modules', '.cache' },
-            },
-            actions = {
-                open_file = {
-                    quit_on_open = true, -- Close nvim-tree automatically after opening a file
-                    resize_window = true,
-                },
-            },
-            view = {
-                width = 30,          -- Default width of the tree
-                relativenumber = true, -- Show relative numbers in the tree view
-                side = 'left',       -- Position the tree on the left side
-            },
-            renderer = {
-                group_empty = true,
-                highlight_git = "all", -- `highlight_git` moved directly under `renderer`
-            },
-            git = {
-                ignore = false,      -- Don't ignore files in .gitignore
---                highlight = true ,    -- This highlights the git status signs in the tree view
-            },
-            update_focused_file = {
-                enable = true,       -- Keep tree in sync with currently open buffer
-                update_root = true,
-                ignore_list = {},
-            },
-          }
-          -- Keybindings for nvim-tree
-          vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree (file explorer)' })
-          vim.keymap.set('n', '<leader>E', ':NvimTreeFocus<CR>', { desc = 'Focus NvimTree' })
-        end
-   },
+    -- PLUGIN 8: nvim-tree.lua - A modern file explorer.
+    -- Very useful for navigating project directories.
+    -- ~/.config/nvim/lua/plugins/nvim-tree.lua
 
     -- PLUGIN 9: telescope.nvim - A highly extensible fuzzy finder.
     -- Incredibly powerful for quickly finding files, text content, Git commits, and more.
     -- ~/.config/nvim/lua/plugins/telescope.lua
 
-  -- PLUGIN 10: nvim-lualine/lualine.nvim - A fast and highly customizable Neovim statusline.
-  -- Makes your statusline at the bottom of the screen much more informative and good-looking.
-  { 'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- For filetype icons in the statusline
-    config = function()
-      require('lualine').setup {
-        options = {
-          icons_enabled = true,
-          theme = 'auto', -- 'auto' or try 'onedark', 'material', 'tokyonight', etc.
-          component_separators = { left = '?', right = '?'}, -- Aesthetic separators
-          section_separators = { left = '?', right = '?'},    -- Aesthetic separators
-          disabled_filetypes = {
-            statusline = {},
-            winbar = {},
-          },
-          ignore_focus = {},
-          always_last_status = true,
-          padding = 1,
-        },
-        sections = { -- Customize what goes into each section of the statusline
-          lualine_a = {'mode'},
-          lualine_b = {'branch', 'diff', 'diagnostics'},
-          lualine_c = {'filename'},
-          lualine_x = {'encoding', 'fileformat', 'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
-        },
-        inactive_sections = { -- What shows up in inactive window statuslines
-          lualine_a = {},
-          lualine_b = {},
-          lualine_c = {'filename'},
-          lualine_x = {'location'},
-          lualine_y = {},
-          lualine_z = {}
-        },
-        tabline = {}, -- You can also configure a tabline
-        extensions = {'nvim-tree', 'lazy'} -- Integrate with other plugins
-      }
-    end
-  },
+    -- PLUGIN 10: nvim-lualine/lualine.nvim - A fast and highly customizable Neovim statusline.
+    -- Makes your statusline at the bottom of the screen much more informative and good-looking.
+    -- ~/.config/nvim/lua/plugins/lualine.lua
+
     -- PLUGIN 11: markdown-preview
-  {
-        'iamcco/markdown-preview.nvim',
-        ft = 'markdown', -- Only load this plugin for markdown files
-        build = 'cd app && npm install', -- Install Node.js dependencies
-        init = function ()
-            vim.g.mkdp_brower = 'google-chrome'
-        end,
-  },
+    -- ~/.config/nvim/lua/plugins/markdown-preview.lua
 })
 
 -- Additional Keybindings (can go here after plugins are defined)
