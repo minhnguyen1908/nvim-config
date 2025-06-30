@@ -25,17 +25,14 @@ return {
             on_attach = attach_lsp_keymaps,
             settings = {
                 Lua = {
+                    runtime = {
+                        version = 'LuaJIT'
+                    },
+                    diagnostics = {
+                        globals = { "vim" },
+                    },
                     workspace = {
-                        -- Tells lua_ls where to find Neovim's runtime files.
-                        -- This is crucial for recognizing the 'vim' global and other Neovim APIs
-                        library = {
-                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                            [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-                        },
-                        diagnostics = {
-                            -- Add 'vim' to the list of recognized globals.
-                            globals = { "vim" },
-                        },
+                        library = vim.api.nvim_get_runtime_diagnostics(),
                         checkThirdParty = false,
                     },
                     telemetry = { enable = false },
