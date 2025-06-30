@@ -1,3 +1,20 @@
+-- Add user-specific LuaRocks paths to package.path and package.cpath
+-- This targets the installation in /Users/minhnguyen/.luarocks/
+-- for Lua 5.1, which matches Neovim's internal Lua version.
+
+local user_rocks_prefix = vim.fn.expand("~/.luarocks") -- This resolves to /Users/minhnguyen/.luarocks
+
+-- Neovim's internal Lua version is 5.1, so we target 5.1 for the paths
+local lua_version_major_minor = "5.1"
+
+-- Add paths for pure Lua modules (.lua files)
+package.path = package.path .. ";" .. user_rocks_prefix .. "/share/lua/" .. lua_version_major_minor .. "/?.lua"
+package.path = package.path .. ";" .. user_rocks_prefix .. "/share/lua/" .. lua_version_major_minor .. "/?/init.lua"
+
+-- Add paths for compiled Lua modules (.so files)
+package.cpath = package.cpath .. ";" .. user_rocks_prefix .. "/lib/lua/" .. lua_version_major_minor .. "/?.so"
+package.cpath = package.cpath .. ";" .. user_rocks_prefix .. "/lib/lua/" .. lua_version_major_minor .. "/loadall.so"
+
 -- This file is Neovim's main configuration file.
 -- It's written in Lua, a lightweight, multi-paradigm programming language.
 -- For documentation, use `:help <topic>` in Neovim, e.g., `:help vim.o` for options.
@@ -82,39 +99,6 @@ vim.api.nvim_create_autocmd('VimEnter', {
   group = vim.api.nvim_create_augroup('NvimTreeAutoOpen', { clear = true }),
   desc = 'Open NvimTree on startup if no file is specified',
 })
-
--- [[ Set up keymaps ]]
--- `vim.keymap.set(modes, lhs, rhs, opts)`:
--- `modes`: 'n' (Normal), 'i' (Insert), 'v' (Visual), 't' (Terminal), etc.
--- `lhs`: The key sequence you press.
--- `rhs`: What Neovim does when you press `lhs`.
--- `opts`: Table for options like `desc` (description for `:h keymap`), `noremap` (don't remap rhs), etc.
--- See `:h vim.keymap.set()`, `:h mapping`, `:h keycodes`
-
--- Basic file operations using leader key
-vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save File' })
-vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit Neovim' })
-vim.keymap.set('n', '<leader>Q', ':q!<CR>', { desc = 'Force Quit Neovim (discard changes)' })
-vim.keymap.set('n', '<leader>x', ':wq<CR>', { desc = 'Save and Quit' })
-
--- Use <Esc> to exit terminal mode.
--- `<C-\><C-n>` is the standard way to exit terminal mode to Normal mode.
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Map <A-j>, <A-k>, <A-h>, <A-l> (Alt + arrows) to navigate between windows (splits).
--- These are very efficient for split-screen workflows.
--- In 't' (Terminal) and 'i' (Insert) modes, we first exit to Normal mode, then move.
-vim.keymap.set({ 't', 'i' }, '<A-h>', '<C-\\><C-n><C-w>h', { desc = 'Move to left window' })
-vim.keymap.set({ 't', 'i' }, '<A-j>', '<C-\\><C-n><C-w>j', { desc = 'Move to down window' })
-vim.keymap.set({ 't', 'i' }, '<A-k>', '<C-\\><C-n><C-w>k', { desc = 'Move to up window' })
-vim.keymap.set({ 't', 'i' }, '<A-l>', '<C-\\><C-n><C-w>l', { desc = 'Move to right window' })
--- In Normal mode, we directly move between windows.
-vim.keymap.set('n', '<A-h>', '<C-w>h', { desc = 'Move to left window' })
-vim.keymap.set('n', '<A-j>', '<C-w>j', { desc = 'Move to down window' })
-vim.keymap.set('n', '<A-k>', '<C-w>k', { desc = 'Move to up window' })
-vim.keymap.set('n', '<A-l>', '<C-w>l', { desc = 'Move to right window' })
--- Use <leader>p (paste) followed by 'l' (line below) to paste the content from OS clipboard
-vim.keymap.set('n', '<leader>pl', 'o<C-r>+<Esc>', { desc = 'Paste system clipboard to new line below' })
 
 -- [[ Basic Autocommands ]]
 -- Autocommands automatically execute commands when certain events occur (e.g., opening a file).
@@ -208,9 +192,8 @@ require("lazy").setup({
 
 -- Additional Keybindings (can go here after plugins are defined)
 --------------------------------------------------------------------------------------
--- Keybinding for ToggleTerm (must be defined after ToggleTerm is set up by lazy.nvim)
-vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' }) -- Normal mode to open/close
-vim.keymap.set('t', '<leader>tt', '<cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' }) -- Terminal mode to close
+-- ~/.config/nvim/lua/keymaps.lua
+require('keymaps')
 
 -- [[ Add optional packages ]]
 -- Nvim comes bundled with a set of packages that are not enabled by
