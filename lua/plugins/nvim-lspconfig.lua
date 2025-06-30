@@ -22,7 +22,11 @@ return {
         }
         lspconfig.lua_ls.setup {
             capabilities = capabilities,
-            on_attach = attach_lsp_keymaps,
+            on_attach = function (client, bufnr)
+                endattach_lsp_keymaps(bufnr)
+                client.config.settings.Lua.workspace.library = vim.api.nvim_get_runtime_diagnostics()
+            end,
+            filetypes = { 'lua' },
             settings = {
                 Lua = {
                     runtime = {
@@ -31,10 +35,10 @@ return {
                     diagnostics = {
                         globals = { "vim" },
                     },
-                    workspace = {
-                        library = vim.api.nvim_get_runtime_diagnostics(),
-                        checkThirdParty = false,
-                    },
+                    --workspace = {
+                        --library = vim.api.nvim_get_runtime_diagnostics(),
+                        --checkThirdParty = false,
+                    --},
                     telemetry = { enable = false },
                 },
             },
