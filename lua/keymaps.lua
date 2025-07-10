@@ -91,12 +91,12 @@ return function(client, bufnr)
     end, { desc = 'Next WARNING Diagnostic' })
 
     -- Open list with only ERROR.
-    lsp_map('n', '<leader>qe', function()
+    lsp_map('n', '<leader>le', function()
         vim.diagnostic.setloclist({ severity = diagnostic_severity.ERROR })
     end, { desc = 'Quickfix List with ERRORs' })
 
     -- Open list with WARNING.
-    lsp_map('n', '<leader>qw', function()
+    lsp_map('n', '<leader>lw', function()
         vim.diagnostic.setloclist({ severity = diagnostic_severity.WARN })
     end, { desc = 'Quickfix List with WARNINGS ' })
 end
