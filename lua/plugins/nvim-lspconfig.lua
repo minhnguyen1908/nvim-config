@@ -22,26 +22,8 @@ return {
         }
         lspconfig.lua_ls.setup {
             capabilities = capabilities,
-            on_attach = function (client, bufnr)
-                endattach_lsp_keymaps(bufnr)
-                client.config.settings.Lua.workspace.library = vim.api.nvim_get_runtime_diagnostics()
-            end,
+            on_attach = attach_lsp_keymaps,
             filetypes = { 'lua' },
-            settings = {
-                Lua = {
-                    runtime = {
-                        version = 'LuaJIT'
-                    },
-                    diagnostics = {
-                        globals = { "vim" },
-                    },
-                    --workspace = {
-                        --library = vim.api.nvim_get_runtime_diagnostics(),
-                        --checkThirdParty = false,
-                    --},
-                    telemetry = { enable = false },
-                },
-            },
         }
         lspconfig.bashls.setup { capabilities = capabilities, on_attach = attach_lsp_keymaps }
         lspconfig.jsonls.setup { capabilities = capabilities, on_attach = attach_lsp_keymaps }
