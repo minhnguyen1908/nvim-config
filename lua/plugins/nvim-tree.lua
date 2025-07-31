@@ -18,7 +18,7 @@ return { 'nvim-tree/nvim-tree.lua',
                 },
             },
             view = {
-                width = 30,          -- Default width of the tree
+                width = 50,          -- Default width of the tree
                 relativenumber = true, -- Show relative numbers in the tree view
                 side = 'left',       -- Position the tree on the left side
             },

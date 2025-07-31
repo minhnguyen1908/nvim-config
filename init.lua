@@ -1,4 +1,3 @@
-vim.g.loaded_python3_provider = 1
 -- Set <space> as the leader key.
 -- The leader key is a prefix for custom keybindings and many plugins.
 -- NOTE: This must happen before plugins are loaded (otherwise wrong leader will be used).
