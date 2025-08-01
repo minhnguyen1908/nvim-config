@@ -3,10 +3,8 @@
 
 return {
   'sindrets/diffview.nvim',
-  -- Recommended: Use an event to lazy-load the plugin for faster startup.
-  -- 'BufReadPost' loads it after any buffer is read. 'VeryLazy' is also an option.
-  event = 'BufReadPost',
 
+    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFile', 'DiffviewLog' },
   -- Optional: Basic configuration for diffview.
   -- You can customize options within this 'config' function.
   config = function()
