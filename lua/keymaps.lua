@@ -37,9 +37,30 @@ vim.keymap.set('n', '<A-l>', '<C-w>l', { desc = 'Move to right window' })
 -- Use <leader>p (paste) followed by 'l' (line below) to paste the content from OS clipboard
 vim.keymap.set('n', '<leader>pl', 'o<C-r>+<Esc>', { desc = 'Paste system clipboard to new line below' })
 
--- Keybinding for ToggleTerm (must be defined after ToggleTerm is set up by lazy.nvim)
-vim.keymap.set('n', '<leader>tt', '<cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' }) -- Normal mode to open/close
-vim.keymap.set('t', '<leader>tt', '<cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' }) -- Terminal mode to close
+-- =============================================================================
+-- GEMINI CHANGE: Centralized Plugin Keymaps
+-- To make the config easier to manage, keymaps for plugins have been
+-- moved here from their individual plugin files.
+-- =============================================================================
+
+-- --- Plugin: nvim-tree.lua ---
+map('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree (file explorer)' })
+map('n', '<leader>E', ':NvimTreeFocus<CR>', { desc = 'Focus NvimTree' })
+
+-- --- Plugin: diffview.nvim ---
+map('n', '<leader>gd', ':DiffviewOpen<CR>', { desc = 'Diffview: Open Git Diff' })
+map('n', '<leader>gh', ':DiffviewFile<CR>', { desc = 'Diffview: Open Current File Diff' })
+map('n', '<leader>gl', ':DiffviewLog<CR>', { desc = 'Diffview: Open Git Log Diff' })
+map('n', '<leader>gq', ':DiffviewClose<CR>', { desc = 'Diffview: Close Diffview' })
+
+-- --- Plugin: toggleterm.nvim ---
+-- GEMINI CHANGE: Combined two keymaps into one for simplicity.
+map({'n', 't'}, '<leader>tt', '<cmd>ToggleTerm<CR>', { desc = 'Toggle Terminal' })
+
+-- =============================================================================
+-- End of Centralized Plugin Keymaps
+-- =============================================================================
+
 
 --- LSP-SPECIFIC KEYMAPS ---
 -- This function will be called from the on_attach callback in your LSP configuration

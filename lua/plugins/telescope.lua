@@ -13,15 +13,15 @@ return { 'nvim-telescope/telescope.nvim',
         git_files = {
             find_command = { 'git', 'ls-files', '--exclude-standard' },
         },
-        file_previewer = require('telescope.previewer').vim_buffer_previewer,
-        grep_previewer = require('telescope.previewer').vim_buffer_previewer,
+        file_previewer = require('telescope.previewers').vim_buffer_previewer,
+        grep_previewer = require('telescope.previewers').vim_buffer_previewer,
     },
     keys = {
         -- Basic File and Buffer Pickers
         { '<leader>ff', function() require('telescope.builtin').find_files() end, desc = 'Telescope: Find Files' },
         { '<leader>fb', function() require('telescope.builtin').buffers() end, desc = 'Telescope: Find Buffers' },
         { '<leader>fg', function() require('telescope.builtin').live_grep() end, desc = 'Telescope: Live Grep (text)' },
-        { '<leader>fh', function() require('telescope.buildin').help_tags() end, desc = 'Telescope: Search Help' },
+        { '<leader>fh', function() require('telescope.builtin').help_tags() end, desc = 'Telescope: Search Help' },
 
         -- GIT Pickers (This is how you use the Git integration)
         { '<leader>fG', function() require('telescope.builtin').git_files() end, desc = 'Telescope: Git Files' },

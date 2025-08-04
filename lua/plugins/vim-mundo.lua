@@ -1,4 +1,6 @@
 return {
     'simnalamburt/vim-mundo',
-    cmd = { "Mundo" },
+    keys = {
+        { '<leader>u', '<cmd>MundoShow<CR>', desc = 'Open Undo Tree (Mundo)' },
+    },
 }

@@ -3,10 +3,8 @@
 
 return {
   'sindrets/diffview.nvim',
-
-    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFile', 'DiffviewLog' },
-  -- Optional: Basic configuration for diffview.
-  -- You can customize options within this 'config' function.
+  -- Keymaps are now defined in lua/keymaps.lua to centralize configuration.
+  -- The plugin will be lazy-loaded when one of those keymaps is pressed.
   config = function()
     require('diffview').setup({
       -- These are default or common options. You can uncomment or change them.
@@ -16,23 +14,4 @@ return {
       -- Add more options from :h diffview.nvim-options as you explore
     })
   end,
-
-  -- Recommended: Define keymaps to quickly open Diffview.
-  -- These keymaps will automatically load the plugin when pressed.
-  -- Place these keymaps either here, or in your main keymaps file (e.g., lua/keymaps.lua)
-  keys = {
-    -- Opens Diffview to show current Git changes (unstaged, staged, unmerged)
-    { '<leader>gd', ':DiffviewOpen<CR>', desc = 'Diffview: Open Git Diff' },
-
-    -- Opens Diffview to show changes for the current file you are editing
-    { '<leader>gh', ':DiffviewFile<CR>', desc = 'Diffview: Open Current File Diff' },
-
-    -- Opens Diffview to browse Git commit history with diffs
-    { '<leader>gl', ':DiffviewLog<CR>', desc = 'Diffview: Open Git Log Diff' },
-
-    -- To close the Diffview window
-    { '<leader>gq', ':DiffviewClose<CR>', desc = 'Diffview: Close Diffview' },
-
-    -- You can add more as you get comfortable!
-  }
 }

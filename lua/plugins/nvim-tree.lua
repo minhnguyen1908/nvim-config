@@ -36,8 +36,5 @@ return { 'nvim-tree/nvim-tree.lua',
                 ignore_list = {},
             },
         }
-        -- Keybindings for nvim-tree
-        vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree (file explorer)' })
-        vim.keymap.set('n', '<leader>E', ':NvimTreeFocus<CR>', { desc = 'Focus NvimTree' })
     end
 }
