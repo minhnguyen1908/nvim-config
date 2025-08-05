@@ -1,36 +1,31 @@
--- PLUGIN 5: nvim-lspconfig for configuring the native Neovim LSP client.
--- This plugin helps Neovim communicate with the language servers Mason installs.
 return {
     'neovim/nvim-lspconfig',
-    dependencies = { 'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim' },
+    dependencies = {
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
+        'hrsh7th/nvim-cmp',
+        'hrsh7th/cmp-nvim-lsp',
+    },
     config = function()
         local lspconfig = require('lspconfig')
-        -- `capabilities` informs the LSP server about Neovim's features (e.g., snippet support).
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-        -- Load the keymap function from your centralized keymaps file
-        -- This function will be used as the on_attach callback for LSP servers
         local attach_lsp_keymaps = require('keymaps')
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-        -- Setup individual LSP servers. Mason will ensure these are installed.
-        -- Each `setup` call configures the LSP client for a specific language.
-        lspconfig.dockerls.setup {
-            capabilities = capabilities,
-            on_attach = attach_lsp_keymaps,
-            filetypes = { 'dockerfile' },
+        local servers = {
+            'dockerls',
+            'docker_compose_language_service',
+            'lua_ls',
+            'bashls',
+            'jsonls',
+            'yamlls',
+            'pyright',
         }
-        lspconfig.lua_ls.setup {
-            capabilities = capabilities,
-            on_attach = attach_lsp_keymaps,
-            filetypes = { 'lua' },
-        }
-        lspconfig.bashls.setup { capabilities = capabilities, on_attach = attach_lsp_keymaps }
-        lspconfig.jsonls.setup { capabilities = capabilities, on_attach = attach_lsp_keymaps }
-        lspconfig.yamlls.setup { capabilities = capabilities, on_attach = attach_lsp_keymaps }
-        lspconfig.pyright.setup { capabilities = capabilities, on_attach = attach_lsp_keymaps }
 
-        -- You can add more LSP setups here as you install more servers via Mason.
-        -- Example: lspconfig.tsserver.setup { capabilities = capabilities, on_attach = on_attach }
+        for _, server_name in ipairs(servers) do
+            lspconfig[server_name].setup({
+                on_attach = attach_lsp_keymaps,
+                capabilities = capabilities,
+            })
+        end
     end,
 }

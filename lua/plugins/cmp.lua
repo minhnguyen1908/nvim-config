@@ -14,6 +14,12 @@ return { 'hrsh7th/nvim-cmp',
         local luasnip = require('luasnip')
         local cmp_autopairs = require('nvim-autopairs.completion.cmp') -- For autopairs integration
 
+        -- This is the crucial part: defining the capabilities object.
+        -- neodev will augment this object to add the Neovim runtime info.
+        local capabilities = require('cmp_nvim_lsp').default_capabilities(
+            vim.lsp.protocol.make_client_capabilities()
+        )
+
         cmp.setup({
             auto_select = false, -- do not auto select the text in popup window of nvim-cmp.
 
@@ -75,5 +81,12 @@ return { 'hrsh7th/nvim-cmp',
         })
 
         cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-    end
+    end,
+    -- Export the capabilities object so lspconfig can use it.
+    opts = function(_, opts)
+        opts.capabilities = require('cmp_nvim_lsp').default_capabilities(
+            vim.lsp.protocol.make_client_capabilities()
+        )
+        return opts
+    end,
 }
