@@ -73,7 +73,7 @@ return function(client, bufnr)
     end
 
     -- Enable completion triggered by <C-x><C-o> in insert mode
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.api.nvim_set_option_value('omnifunc', 'v:lua.vim.lsp.omnifunc', { buf = bufnr })
 
     -- Mappings for LSP functionalities
     -- See `:help vim.lsp.*` for the functions.
@@ -86,29 +86,29 @@ return function(client, bufnr)
     lsp_map('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code Action' })
 
     -- Diagnostic navigation (errors/warnings)
-    lsp_map('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous Diagnostic' })
-    lsp_map('n', ']d', vim.diagnostic.goto_next, { desc = 'Next Diagnostic' })
+    lsp_map('n', '[d', function() vim.diagnostic.jump({ count = -1 }) end, { desc = 'Previous Diagnostic' })
+    lsp_map('n', ']d', function() vim.diagnostic.jump({ count = 1 }) end, { desc = 'Next Diagnostic' })
 
     local diagnostic_severity = vim.diagnostic.severity
 
     -- Jump to previous ERROR.
     lsp_map('n', '[e', function()
-        vim.diagnostic.goto_prev({ severity = diagnostic_severity.ERROR })
+        vim.diagnostic.jump({ count = -1, severity = diagnostic_severity.ERROR })
     end, { desc = 'Previous ERROR Diagnostic' })
 
     -- Jump to next ERROR.
     lsp_map('n', ']e', function()
-        vim.diagnostic.goto_next({ severity = diagnostic_severity.ERROR })
+        vim.diagnostic.jump({ count = 1, severity = diagnostic_severity.ERROR })
     end, { desc = 'Next ERROR Diagnostic' })
 
     -- Jump to previous WARNING.
     lsp_map('n', '[w', function()
-        vim.diagnostic.goto_prev({ severity = diagnostic_severity.WARN })
+        vim.diagnostic.jump({ count = -1, severity = diagnostic_severity.WARN })
     end, { desc = 'Previous WARNING Diagnostic' })
 
     -- Jump to next WARNING.
     lsp_map('n', ']w', function()
-        vim.diagnostic.goto_next({ severity = diagnostic_severity.WARN })
+        vim.diagnostic.jump({ count = 1, severity = diagnostic_severity.WARN })
     end, { desc = 'Next WARNING Diagnostic' })
 
     -- Open list with only ERROR.
