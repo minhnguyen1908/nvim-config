@@ -7,7 +7,6 @@ return {
         'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-        local lspconfig = require('lspconfig')
         local attach_lsp_keymaps = require('keymaps')
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -22,7 +21,7 @@ return {
         }
 
         for _, server_name in ipairs(servers) do
-            lspconfig[server_name].setup({
+            vim.lsp.config(server_name, {
                 on_attach = attach_lsp_keymaps,
                 capabilities = capabilities,
             })
