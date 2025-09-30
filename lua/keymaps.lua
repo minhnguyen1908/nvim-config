@@ -43,9 +43,8 @@ vim.keymap.set('n', '<leader>pl', 'o<C-r>+<Esc>', { desc = 'Paste system clipboa
 -- moved here from their individual plugin files.
 -- =============================================================================
 
--- --- Plugin: nvim-tree.lua ---
-map('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle NvimTree (file explorer)' })
-map('n', '<leader>E', ':NvimTreeFocus<CR>', { desc = 'Focus NvimTree' })
+-- --- Plugin: neo-tree.nvim ---
+map('n', '<leader>e', ':Neotree filesystem toggle left<CR>', { desc = 'Toggle Neo-tree' })
 
 -- --- Plugin: diffview.nvim ---
 map('n', '<leader>gd', ':DiffviewOpen<CR>', { desc = 'Diffview: Open Git Diff' })

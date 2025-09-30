@@ -38,3 +38,6 @@ plugged/
 # Anything else you want to ignore
 # env file
 .env
+
+# lazy-lock file
+lazy-lock.json

@@ -50,6 +50,9 @@ vim.o.undofile = true         -- Enable persistent undo. Your undo history is sa
 vim.o.undodir = vim.fn.stdpath("data") .. "/undodir" -- Specify the directory for persistent undo files.
                                                      -- `vim.fn.stdpath("data")` is cross-platform.
 
+vim.opt.splitright = true      -- Open new vertical splits to the right of the current window.
+vim.opt.splitbelow = true      -- Open new horizontal splits below the current window.
+
 -- Create the undo directory if it does not exist.
 local undodir = vim.o.undodir
 if not vim.fn.isdirectory(undodir) then
@@ -67,16 +70,16 @@ vim.api.nvim_create_autocmd('UIEnter', {
   end,
 })
 
--- Open nvim-tree automatically when Neovim starts without a specific file
+-- Open neo-tree automatically when Neovim starts without a specific file
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     -- Check if no files were opened and if the current buffer is empty
     if #vim.api.nvim_list_bufs() == 1 and vim.bo.buftype == '' and vim.fn.argv(0) == nil then
-      vim.cmd('NvimTreeOpen')
+      vim.cmd('Neotree')
     end
   end,
-  group = vim.api.nvim_create_augroup('NvimTreeAutoOpen', { clear = true }),
-  desc = 'Open NvimTree on startup if no file is specified',
+  group = vim.api.nvim_create_augroup('NeoTreeAutoOpen', { clear = true }),
+  desc = 'Open NeoTree on startup if no file is specified',
 })
 
 -- [[ Basic Autocommands ]]

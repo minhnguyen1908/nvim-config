@@ -34,7 +34,7 @@ return { 'nvim-lualine/lualine.nvim',
                 lualine_z = {}
             },
             tabline = {}, -- You can also configure a tabline
-            extensions = {'nvim-tree', 'lazy'} -- Integrate with other plugins
+            extensions = {'neo-tree', 'lazy'} -- Integrate with other plugins
         }
     end
 }
