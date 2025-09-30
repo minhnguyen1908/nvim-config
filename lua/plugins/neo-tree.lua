@@ -5,55 +5,50 @@ return {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 		"MunifTanjim/nui.nvim",
-		"folke/snacks.nvim",
 	},
+	lazy = false,
+	---@module 'neo-tree'
+	---@type neotree.Config
 	config = function()
 		require("neo-tree").setup({
 			window = {
 				mappings = {
 					["Y"] = function(state)
+						-- NeoTree is based on [NuiTree](https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/tree)
+						-- The node is based on [NuiNode](https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/tree#nuitreenode)
 						local node = state.tree:get_node()
-						if not node or not node.id then
-							vim.notify("No node selected.", vim.log.levels.WARN)
-							return
-						end
-
-						if vim.fn.has("clipboard") == 0 then
-							vim.notify("System clipboard is not available.", vim.log.levels.ERROR)
-							return
-						end
-
 						local filepath = node:get_id()
 						local filename = node.name
 						local modify = vim.fn.fnamemodify
 
-						local choices = {
-							{ label = "Absolute path", value = filepath },
-							{ label = "Path relative to CWD", value = modify(filepath, ":.") },
-							{ label = "Path relative to HOME", value = modify(filepath, ":~") },
-							{ label = "Filename", value = filename },
-							{ label = "Filename without extension", value = modify(filename, ":r") },
-							{ label = "Extension of the filename", value = modify(filename, ":e") },
+						local results = {
+							filepath,
+							modify(filepath, ":."),
+							modify(filepath, ":~"),
+							filename,
+							modify(filename, ":r"),
+							modify(filename, ":e"),
 						}
 
-						-- THE CHANGE IS ON THIS LINE:
-						-- Instead of vim.ui.select, we call the snacks picker directly.
-						require("snacks").picker.select(choices, {
-							prompt = "Choose to copy to clipboard:",
-							format_item = function(item)
-								return string.format("%-30s %s", item.label, item.value)
-							end,
-						}, function(choice)
-							if not choice then
-								vim.notify("Copy cancelled.", vim.log.levels.INFO)
-								return
+						-- absolute path to clipboard
+						local i = vim.fn.inputlist({
+							"Choose to copy to clipboard:",
+							"1. Absolute path: " .. results[1],
+							"2. Path relative to CWD: " .. results[2],
+							"3. Path relative to HOME: " .. results[3],
+							"4. Filename: " .. results[4],
+							"5. Filename without extension: " .. results[5],
+							"6. Extension of the filename: " .. results[6],
+						})
+
+						if i > 0 then
+							local result = results[i]
+							if not result then
+								return print("Invalid choice: " .. i)
 							end
-
-							local value_to_copy = choice.value
-
-							vim.fn.setreg("+", value_to_copy)
-							vim.notify("Copied to clipboard: " .. value_to_copy)
-						end)
+							vim.fn.setreg('"', result)
+							vim.notify("Copied: " .. result)
+						end
 					end,
 				},
 			},
