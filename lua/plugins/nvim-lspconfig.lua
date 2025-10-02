@@ -18,6 +18,11 @@ return {
 			"jsonls",
 			"yamlls",
 			"pyright",
+			"tsserver",
+			"html",
+			"cssls",
+			"marksman",
+			"sqlls",
 		}
 
 		for _, server_name in ipairs(servers) do

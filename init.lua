@@ -53,6 +53,10 @@ vim.o.undodir = vim.fn.stdpath("data") .. "/undodir" -- Specify the directory fo
 vim.opt.splitright = true -- Open new vertical splits to the right of the current window.
 vim.opt.splitbelow = true -- Open new horizontal splits below the current window.
 
+-- Folding for text/code blocks based on indentation.
+vim.opt.foldenable = true
+vim.opt.foldmethod = "manual"
+
 -- Create the undo directory if it does not exist.
 local undodir = vim.o.undodir
 if not vim.fn.isdirectory(undodir) then
