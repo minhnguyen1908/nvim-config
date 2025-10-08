@@ -38,9 +38,12 @@ plugged/
 # Anything else you want to ignore
 # env file
 .env
+<<<<<<< HEAD
 
 # lazy-lock file
 lazy-lock.json
 
 # Firebase Studio environment config
 .idx
+=======
+>>>>>>> 8afdfd0 (Added noice.lua package)

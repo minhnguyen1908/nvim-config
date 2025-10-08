@@ -56,6 +56,10 @@ vim.opt.splitbelow = true -- Open new horizontal splits below the current window
 -- Folding for text/code blocks based on indentation.
 vim.opt.foldenable = true
 vim.opt.foldmethod = "manual"
+--vim.api.nvim_create_autocmd({ "FileType" }, {
+--pattern = "markdown",
+--command = "setlocal foldmethod=indent",
+--})
 
 -- Create the undo directory if it does not exist.
 local undodir = vim.o.undodir

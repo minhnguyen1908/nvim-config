@@ -3,22 +3,24 @@ return {
 	branch = "v3.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+		"nvim-tree/nvim-web-devicons",
 		"MunifTanjim/nui.nvim",
 	},
 	lazy = false,
-	---@module 'neo-tree'
-	---@type neotree.Config
 	config = function()
+		local notify = vim.notify
+
 		require("neo-tree").setup({
 			window = {
 				mappings = {
 					["Y"] = function(state)
-						-- NeoTree is based on [NuiTree](https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/tree)
-						-- The node is based on [NuiNode](https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/tree#nuitreenode)
-						local node = state.tree:get_node()
-						local filepath = node:get_id()
-						local filename = node.name
+						local focused_node = state.tree:get_node()
+						if not focused_node or focused_node.type == "directory" then
+							return
+						end
+
+						local filepath = focused_node.id
+						local filename = focused_node.name
 						local modify = vim.fn.fnamemodify
 
 						local results = {
@@ -29,25 +31,24 @@ return {
 							modify(filename, ":r"),
 							modify(filename, ":e"),
 						}
-
-						-- absolute path to clipboard
-						local i = vim.fn.inputlist({
-							"Choose to copy to clipboard:",
+						local choice_names = {
 							"1. Absolute path: " .. results[1],
 							"2. Path relative to CWD: " .. results[2],
 							"3. Path relative to HOME: " .. results[3],
 							"4. Filename: " .. results[4],
 							"5. Filename without extension: " .. results[5],
 							"6. Extension of the filename: " .. results[6],
-						})
+						}
 
-						if i > 0 then
-							local result = results[i]
-							if not result then
-								return print("Invalid choice: " .. i)
-							end
+						local choice = vim.fn.input(table.concat(choice_names, "\n") .. "\nChoose: ")
+						local choice_index = tonumber(choice)
+
+						if choice_index and choice_index >= 1 and choice_index <= #results then
+							local result = results[choice_index]
 							vim.fn.setreg('"', result)
-							vim.notify("Copied: " .. result)
+							notify("Copied: " .. result, vim.log.levels.INFO)
+						else
+							notify("Invalid choice: " .. choice, vim.log.levels.ERROR)
 						end
 					end,
 				},
