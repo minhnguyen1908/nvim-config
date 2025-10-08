@@ -41,3 +41,6 @@ plugged/
 
 # lazy-lock file
 lazy-lock.json
+
+# Firebase Studio environment config
+.idx
