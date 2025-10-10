@@ -12,6 +12,7 @@ return {
 		require("neo-tree").setup({
 			window = {
 				mappings = {
+					["<space>"] = "none",
 					["Y"] = function(state)
 						local node = state.tree:get_node()
 						if not node then

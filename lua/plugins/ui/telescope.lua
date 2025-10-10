@@ -17,15 +17,6 @@ return {
 		file_previewer = require("telescope.previewers").vim_buffer_previewer,
 		grep_previewer = require("telescope.previewers").vim_buffer_previewer,
 	},
-	keys = {
-		{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Telescope: Find Files" },
-		{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Telescope: Find Buffers" },
-		{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Telescope: Live Grep (text)" },
-		{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Telescope: Search Help" },
-		{ "<leader>fG", "<cmd>Telescope git_files<cr>", desc = "Telescope: Git Files" },
-		{ "<leader>fc", "<cmd>Telescope git_commits<cr>", desc = "Telescope: Git Commits" },
-		{ "<leader>ts", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Telescope: LSP Document Symbols" },
-	},
 	config = function()
 		require("telescope").setup({
 			extensions = {
