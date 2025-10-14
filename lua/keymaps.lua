@@ -57,6 +57,10 @@ map("n", "<leader>ts", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Tele
 -- --- Plugin: vim-mundo ---
 map("n", "<leader>u", "<cmd>MundoShow<CR>", { desc = "Open Undo Tree (Mundo)" })
 
+-- --- Plugin: copilot.vim ---
+map("i", "<C-l>", function()
+	vim.fn.feedkeys(vim.fn["copilot#Accept"](), "i")
+end, { noremap = true, silent = true, desc = "Copilot: Accept suggestion" })
 -- =============================================================================
 -- LSP KEYMAPS (This part remains the same)
 -- =============================================================================
