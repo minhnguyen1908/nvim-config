@@ -61,6 +61,12 @@ map("n", "<leader>u", "<cmd>MundoShow<CR>", { desc = "Open Undo Tree (Mundo)" })
 map("i", "<C-l>", function()
 	vim.fn.feedkeys(vim.fn["copilot#Accept"](), "i")
 end, { noremap = true, silent = true, desc = "Copilot: Accept suggestion" })
+
+-- --- Plugin: conform.nvim ---
+vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+	require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format File" })
+
 -- =============================================================================
 -- LSP KEYMAPS (This part remains the same)
 -- =============================================================================

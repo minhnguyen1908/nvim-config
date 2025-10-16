@@ -12,13 +12,9 @@ return {
 		require("neo-tree").setup({
 			window = {
 				mappings = {
-
-					-- Remove default filter behavior of "/" key.
-					["/"] = "none",
-
+					["Z"] = "expand_all_nodes", -- Expand all nodes in the tree.
 					-- Disable space key to avoid conflicts with other plugins like <leader>e - open/close neo-tree.
 					["<space>"] = "none",
-
 					-- Custom mapping to copy file/directory name/path to clipboard with options.
 					["Y"] = function(state)
 						local node = state.tree:get_node()
