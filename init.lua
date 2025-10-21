@@ -1,6 +1,9 @@
 -- Copilot settings
 vim.g.copilot_no_tab_map = true
 
+-- Set python provider
+vim.g.python3_host_prog = vim.fn.expand("~/.pyenv/versions/neovim3/bin/python")
+
 -- Set <space> as the leader key.
 -- The leader key is a prefix for custom keybindings and many plugins.
 -- NOTE: This must happen before plugins are loaded (otherwise wrong leader will be used).

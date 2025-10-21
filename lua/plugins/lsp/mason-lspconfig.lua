@@ -18,7 +18,7 @@ return {
 			"cssls",
 			"marksman",
 			"sqlls",
-			"tsserver",
+			"typescript_language_server",
 		},
 	},
 }
