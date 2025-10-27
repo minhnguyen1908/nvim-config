@@ -8,14 +8,14 @@ map("n", "<leader>q", ":q<CR>", { desc = "Quit Neovim" })
 map("n", "<leader>Q", ":q!<CR>", { desc = "Force Quit Neovim (discard changes)" })
 map("n", "<leader>x", ":wq<CR>", { desc = "Save and Quit" })
 map("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set({ "t", "i" }, "<A-h>", "<C-\\><C-n><C-w>h", { desc = "Move to left window" })
-vim.keymap.set({ "t", "i" }, "<A-j>", "<C-\\><C-n><C-w>j", { desc = "Move to down window" })
-vim.keymap.set({ "t", "i" }, "<A-k>", "<C-\\><C-n><C-w>k", { desc = "Move to up window" })
-vim.keymap.set({ "t", "i" }, "<A-l>", "<C-\\><C-n><C-w>l", { desc = "Move to right window" })
-vim.keymap.set("n", "<A-h>", "<C-w>h", { desc = "Move to left window" })
-vim.keymap.set("n", "<A-j>", "<C-w>j", { desc = "Move to down window" })
-vim.keymap.set("n", "<A-k>", "<C-w>k", { desc = "Move to up window" })
-vim.keymap.set("n", "<A-l>", "<C-w>l", { desc = "Move to right window" })
+--vim.keymap.set({ "t", "i" }, "<A-h>", "<C-\\><C-n><C-w>h", { desc = "Move to left window" })
+--vim.keymap.set({ "t", "i" }, "<A-j>", "<C-\\><C-n><C-w>j", { desc = "Move to down window" })
+--vim.keymap.set({ "t", "i" }, "<A-k>", "<C-\\><C-n><C-w>k", { desc = "Move to up window" })
+--vim.keymap.set({ "t", "i" }, "<A-l>", "<C-\\><C-n><C-w>l", { desc = "Move to right window" })
+--vim.keymap.set("n", "<A-h>", "<C-w>h", { desc = "Move to left window" })
+--vim.keymap.set("n", "<A-j>", "<C-w>j", { desc = "Move to down window" })
+--vim.keymap.set("n", "<A-k>", "<C-w>k", { desc = "Move to up window" })
+--vim.keymap.set("n", "<A-l>", "<C-w>l", { desc = "Move to right window" })
 vim.keymap.set("n", "<leader>pl", "o<C-r>+<Esc>", { desc = "Paste system clipboard to new line below" })
 
 -- =============================================================================
@@ -24,6 +24,20 @@ vim.keymap.set("n", "<leader>pl", "o<C-r>+<Esc>", { desc = "Paste system clipboa
 
 -- --- Plugin: neo-tree.nvim ---
 map("n", "<leader>e", ":Neotree filesystem toggle left<CR>", { desc = "Toggle Neo-tree" })
+
+-- --- Plugin: vim-tmux-navigator ---
+map({ "n", "t" }, "<C-h>", function()
+	vim.cmd("TmuxNavigateLeft")
+end, { desc = "Move to left pane" })
+map({ "n", "t" }, "<C-j>", function()
+	vim.cmd("TmuxNavigateDown")
+end, { desc = "Move to down pane" })
+map({ "n", "t" }, "<C-k>", function()
+	vim.cmd("TmuxNavigateUp")
+end, { desc = "Move to up pane" })
+map({ "n", "t" }, "<C-l>", function()
+	vim.cmd("TmuxNavigateRight")
+end, { desc = "Move to right pane" })
 
 -- --- Plugin: diffview.nvim ---
 map("n", "<leader>gd", ":DiffviewOpen<CR>", { desc = "Diffview: Open Git Diff" })
